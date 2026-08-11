@@ -1,0 +1,328 @@
+:root {
+  --ui-font: 'Segoe UI', system-ui, Roboto, sans-serif;
+  --ui-bg-panel: rgba(15, 20, 35, 0.82);
+  --ui-bg-panel-border: rgba(255, 255, 255, 0.15);
+  --ui-accent: #ffcc33;
+  --ui-accent-dark: #e0a91e;
+  --ui-text: #ffffff;
+  --ui-text-dim: rgba(255, 255, 255, 0.75);
+  --ui-shadow: rgba(0, 0, 0, 0.45) 0 12px 30px -6px;
+  --ui-radius: 18px;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: var(--ui-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+#app canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: none;
+}
+
+#ui-root {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 10;
+  user-select: none;
+}
+
+.ui-hidden {
+  display: none !important;
+}
+
+.ui-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(10, 14, 26, 0.35), rgba(10, 14, 26, 0.65));
+  pointer-events: none;
+}
+
+.ui-screen.ui-interactive {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.ui-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 40px 48px;
+  background: var(--ui-bg-panel);
+  border: 1px solid var(--ui-bg-panel-border);
+  border-radius: var(--ui-radius);
+  box-shadow: var(--ui-shadow);
+  backdrop-filter: blur(6px);
+  text-align: center;
+  animation: ui-panel-in 0.35s ease-out;
+}
+
+@keyframes ui-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ui-title {
+  margin: 0;
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ui-text);
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+}
+
+.ui-subtitle {
+  margin: 0;
+  font-size: clamp(14px, 2.4vw, 18px);
+  color: var(--ui-text-dim);
+  animation: ui-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes ui-pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.ui-button {
+  pointer-events: auto;
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 42px;
+  font-size: clamp(16px, 2.6vw, 20px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #201700;
+  background: linear-gradient(180deg, var(--ui-accent), var(--ui-accent-dark));
+  box-shadow: 0 6px 0 #a87814, 0 10px 18px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.ui-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #a87814, 0 14px 22px rgba(0, 0, 0, 0.4);
+}
+
+.ui-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 #a87814, 0 6px 12px rgba(0, 0, 0, 0.35);
+}
+
+.ui-score-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  min-width: 200px;
+  font-size: clamp(16px, 2.6vw, 20px);
+  color: var(--ui-text-dim);
+}
+
+.ui-final-score,
+.ui-high-score {
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 800;
+  color: var(--ui-accent);
+}
+
+.ui-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ui-score {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(40px, 8vw, 64px);
+  font-weight: 800;
+  color: var(--ui-text);
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.4), 0 0 18px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.ui-multiplier-badge {
+  position: absolute;
+  top: calc(max(20px, env(safe-area-inset-top)) + clamp(52px, 9.5vw, 78px));
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: rgba(255, 204, 51, 0.18);
+  border: 1px solid rgba(255, 204, 51, 0.6);
+  color: var(--ui-accent);
+  font-size: 15px;
+  font-weight: 700;
+  text-shadow: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  animation: ui-multiplier-in 0.25s ease-out;
+}
+
+@keyframes ui-multiplier-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+.ui-effects {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top));
+  right: max(20px, env(safe-area-inset-right));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.ui-effect-icon {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  pointer-events: auto;
+}
+
+.ui-effect-icon:hover .ui-effect-tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.ui-effect-ring {
+  position: absolute;
+  inset: 0;
+  width: 48px;
+  height: 48px;
+  transform: rotate(-90deg);
+}
+
+.ui-effect-ring-bg,
+.ui-effect-ring-fg {
+  fill: rgba(15, 20, 35, 0.7);
+  stroke-width: 3;
+  cx: 20;
+  cy: 20;
+  r: 17;
+}
+
+.ui-effect-ring-bg {
+  stroke: rgba(255, 255, 255, 0.15);
+}
+
+.ui-effect-ring-fg {
+  stroke: var(--ui-accent);
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.2s linear;
+}
+
+.ui-effect-glyph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  pointer-events: none;
+}
+
+.ui-effect-time {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ui-text);
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
+  padding: 0 4px;
+  pointer-events: none;
+}
+
+.ui-effect-tooltip {
+  position: absolute;
+  top: 50%;
+  right: 56px;
+  transform: translate(6px, -50%);
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.75);
+  color: var(--ui-text);
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .ui-panel {
+    padding: 28px 28px;
+    gap: 14px;
+    width: min(88vw, 360px);
+  }
+
+  .ui-effects {
+    top: max(14px, env(safe-area-inset-top));
+    right: max(12px, env(safe-area-inset-right));
+    gap: 8px;
+  }
+
+  .ui-effect-icon,
+  .ui-effect-ring {
+    width: 40px;
+    height: 40px;
+  }
+
+  .ui-score {
+    top: max(12px, env(safe-area-inset-top));
+  }
+}
